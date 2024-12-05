@@ -1,11 +1,14 @@
 <nav>
+  <% if (user) { %>
+    <!-- Links for logged-in users -->
+    <a href="/">Sign out</a>
+  <% } else { %>
+    <!-- Links for logged-out users -->
+    <a href="/auth/sign-up">Sign-up</a>
+    <a href="/auth/sign-in">Sign-in</a>
+  <% } %>
 
-  <a href="/">Sign out</a>
-  <a href="/auth/sign-up">Sign-up</a>
-  <a href="/auth/sign-in">sign-in</a>
-  
-  <a href="/books/index">Book-main </a>
-  <a href="/books/show">show-book</a>
-  
+  <!-- Links that should be visible to everyone -->
+  <a href="/books/index">Book-main</a>
+  <a href="/books/show">Show Book</a>
 </nav>
-
