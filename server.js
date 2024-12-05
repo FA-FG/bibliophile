@@ -1,7 +1,3 @@
-// npm i express mongoose dotenv ejs morgan method-override
-// morgan to display logs
-// ejs to display ejs pages
-// mognoose to connect to the database
 
 require('dotenv').config()
 const mongoose = require('mongoose')
@@ -13,7 +9,6 @@ const session = require('express-session')
 const passUserToView = require("./middleware/pass-user-to-view.js")
 const isSignedIn = require("./middleware/is-signed-in.js");
 
-PORT: "3000"
 
 // connect to mongodb "database"
 mongoose.connect(process.env.MONGODB_URI)
@@ -38,20 +33,21 @@ app.use(
 
 
 
+
 // require controllers
 const authCtrl = require('./controllers/auth')
+const bookCtrl = require('./controllers/books')
+
 // use it 
 app.use('/auth', authCtrl)
+app.use('/books', isSignedIn, bookCtrl)
+
 
 
 app.get('/', async (req, res) => {
   res.render('index.ejs')
 })
 
-// route for testing = vip
-app.get("/vip-lounge", isSignedIn, (req, res) => {
-  res.send(`Welcome to the party ${req.session.user.username}.`);
-});
 
 app.listen(3000, () => {
   console.log('listning 3000')
