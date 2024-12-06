@@ -26,7 +26,6 @@ router.get('/book-page', async (req, res) => {
   const booksData = response.data.items
 
 
-
 // get the data needed and map it to a new list of objects
   const bookList = 
   // || {}, to prevent app from crashing if no data is passed
@@ -57,6 +56,7 @@ router.get('/book-page', async (req, res) => {
 
 
 
+
 // Route to handle individual book details
 router.get('/show/:id', async (req, res) => {
   const bookId = req.params.id;  
@@ -73,5 +73,36 @@ router.get('/show/:id', async (req, res) => {
   }
 });
 
+router.post('/book-page', async (req,res)=>
+  {
+    const search = req.body.search
+
+    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${search}&startIndex=0&maxResults=40&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
+
+    const booksData = response.data.items
+
+      const bookList = 
+      booksData.map(book => {
+          const volumeInfo = book.volumeInfo || {};
+          const rating = volumeInfo.averageRating ;
+          const imageLinks = volumeInfo.imageLinks || {}
+        
+        return {
+          title: volumeInfo.title || 'No Title Available',
+          rating: rating || null, 
+          image: imageLinks.thumbnail || null, 
+          id: book.id
+        }
+      })
+      const sortedBooks = bookList
+      .sort((a, b) => b.rating - a.rating) 
+      // number of books to display
+      .slice(0, 20);
+  
+    
+    res.render('books/book-page.ejs', { books: sortedBooks  })
+
+
+  })
 
 module.exports = router;
