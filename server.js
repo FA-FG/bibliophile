@@ -1,4 +1,4 @@
-
+// require libraries and framework
 require('dotenv').config()
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
@@ -28,9 +28,11 @@ app.use(
     saveUninitialized: true,
   }))
  
-  // Add our custom middleware right after the session middleware
+// custom middleware
   app.use(passUserToView);
 
+  // to get files form public
+  app.use(express.static('public'));
 
 
 
