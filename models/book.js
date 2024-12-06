@@ -16,8 +16,16 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  pages: {
-    type: Number,
+  publish_date: {
+    type: String,
+    required: false,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+  rating: {
+    type: String,
     required: false,
   },
   

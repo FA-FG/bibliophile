@@ -28,8 +28,8 @@ router.post("/sign-up", async (req,res)=>
         const hashedPassword = bcrypt.hashSync(req.body.password, 10);
         req.body.password = hashedPassword;
         const user = await User.create(req.body);
-        // res.send(`Thanks for signing up: ${user.username}`);
-        res.send("Thanks for signing up: "+user.username);
+        res.redirect("/auth/sign-in");
+    
     }
     catch(error)
     {
@@ -60,7 +60,7 @@ router.post('/sign-in', async (req,res)=>
         username: userInDatabase.username,
         _id: userInDatabase._id
     }
-    res.redirect("/");
+    res.redirect("/books");
 })
 
 router.get("/sign-out", (req,res)=>
@@ -68,5 +68,6 @@ router.get("/sign-out", (req,res)=>
     req.session.destroy();
     res.redirect("/");
 })
+
 
 module.exports = router;
