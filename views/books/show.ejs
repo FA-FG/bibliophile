@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book-details</title>
+</head>
+<body>
+  
+  <%- include('../partials/_navbar.ejs') %>
+
+    <div id="show-book-details">
+        <h2><%= book.title %></h2>
+        <p><strong>Author: </strong> <%= book.authors ? book.authors.join(', ') : 'Unknown' %></p>      
+        <p><strong>Genre: </strong> <%= book.categories %></p>
+        <p><strong>Published Date: </strong> <%= book.publishedDate || 'Unknown Published Date' %></p>
+        <p><strong>Description: </strong> <%- book.description || 'No Description Available' %></p>
+        <p><strong>Rating: </strong> <%= book.averageRating || 'No rating available' %></p>
+        
+
+        <img width="130"src="<%= book.imageLinks ? book.imageLinks.thumbnail : '/img/cover.png' %>" alt="Book cover" />
+        <br>
+        <br>
+      
+    </div>
+
+    <button> Add to my list </button>
+    <button> Remove From my list </button>
+
+    <a href="/books/book-page">Book Page</a>
+  
+</body>
+</html>

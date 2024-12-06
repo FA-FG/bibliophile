@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book-page</title>
+
+</head>
+<body>
+  <%- include('../partials/_navbar.ejs') %>
+
+    <h1>Bibliophile</h1>
+    <h2>Welcome to the Book Page</h2>
+
+    <div id="book-details">
+        <% books.forEach(function(book) { %>
+            <div class="book-div">
+                <h3><%= book.title %></h3>
+                <% if (book.image) { %>
+                    <img src="<%= book.image %>" alt="<%= book.title %>" />
+                <% } else { %>
+                  <img width="130" src="/img/cover.png" alt="<%= book.title %>" />
+           
+                <% } %>
+                <p><a href="/books/show/<%= book.id %>">View</a></p>
+          
+            </div>
+        <% }); %>
+    </div>
+
+
+</body>
+</html>
