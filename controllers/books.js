@@ -4,21 +4,75 @@ const axios = require('axios')
 
 const User = require('../models/user.js')
 const Book = require('../models/book.js')
-// const Userbooklist = require('../models/userbooklist.js')
+const Userbooklist = require('../models/userbooklist.js')
 
 // render the index page
 router.get('/', async (req, res) => {
   res.render('books/index.ejs')
 })
 
+
+
+
+router.post('/show/:id', async (req, res) => {
+
+  const userId =  req.session.user._id
+  const  bookId  = req.body.bookId
+
+  console.log(userId)
+
+  try {
+    // Get the book by id
+      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
+
+      const bookData = response.data.volumeInfo;
+
+      // make sure no redundent book are added
+      let inBook = await Book.findOne({ name: bookData.title })
+
+      if (!inBook) {
+          const bookToAdd = new Book({
+              name: bookData.title,
+              author: bookData.authors ? bookData.authors.join(', ') : 'Unknown',
+              genre: bookData.categories ? bookData.categories.join(', ') : 'Unknown',
+              publish_date: bookData.publishedDate || 'Unknown',
+              description: bookData.description || 'No description is available',
+              rating: bookData.averageRating || 'No rating is available',
+          });
+
+          await bookToAdd.save();
+
+
+          const addToList = new Userbooklist({
+            book: bookToAdd._id,  
+            user: userId,      
+            readingStatus: 'Want to Read'  
+          });
+          await addToList.save();
+          
+      }
+      res.redirect('/books/book-page') 
+
+  } catch (error) {
+      console.error(error)
+  }
+})
+
+
+
+
+
+
+
+
 // render the book page
 router.get('/book-page', async (req, res) => {
-  const query = 'flowers+inauthor:keyes'; // Example 
+  const query = 'bestsellers+inauthor:keyes'; // Example 
   const startIndex = parseInt(req.query.startIndex) || 0; //example
   const apiKey = 'YOUR_GOOGLE_API_KEY'; 
 
 // geth the books data from the api
-  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=""&startIndex=0&maxResults=40&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
+  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=bestseller&startIndex=0&maxResults=40&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
   
   // (`https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
 
@@ -41,20 +95,13 @@ router.get('/book-page', async (req, res) => {
       id: book.id
     }
   })
-  // i will filter the the 5 ratings books only
-  // .filter(book => book.rating) 
 
-   // sort by heighest 
-  const sortedBooks = bookList
-    .sort((a, b) => b.rating - a.rating) 
     // number of books to display
     .slice(0, 20);
 
   
-  res.render('books/book-page.ejs', { books: sortedBooks  })
+  res.render('books/book-page.ejs', { books: bookList  })
 });
-
-
 
 
 // Route to handle individual book details
@@ -66,7 +113,7 @@ router.get('/show/:id', async (req, res) => {
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`);
 
 
-    res.render('books/show.ejs', { book: response.data.volumeInfo });
+    res.render('books/show.ejs', { book: response.data});
 
   } catch (error) {
     console.error(error);
@@ -94,15 +141,19 @@ router.post('/book-page', async (req,res)=>
           id: book.id
         }
       })
+      // sort by rating 
       const sortedBooks = bookList
       .sort((a, b) => b.rating - a.rating) 
-      // number of books to display
-      .slice(0, 20);
+      .slice(0, 40);
   
     
     res.render('books/book-page.ejs', { books: sortedBooks  })
 
 
   })
+
+
+
+
 
 module.exports = router;
