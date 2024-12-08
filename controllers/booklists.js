@@ -7,6 +7,29 @@ const User = require('../models/user.js');
 const Book = require('../models/book.js');
 
 
+// Route to display the list of books for a specific user
+router.get('/:Id', async (req, res) => {
+  const userId = req.params.userId;  // Get the user ID from the URL parameter
+
+  try {
+    // Retrieve the user's book list and populate the book details from the Book collection
+    const userBooks = await List.find({ user: userId })
+      .populate('bookName')  // Populate the `bookName` field with book details
+      .exec();
+
+    // Extract the book details from the populated results
+    const books = userBooks.map(userBook => userBook.bookName);
+
+    // Render the 'booklist.ejs' page and pass the books array
+    res.render('booklist', { books: books });
+  } catch (error) {
+    console.error('Error retrieving books:', error);
+    res.status(500).send('Error retrieving books');
+  }
+});
+
+
+
 
 // router.get('/', async (req, res) => {
 //   res.render('books/index.ejs')
@@ -47,9 +70,6 @@ const Book = require('../models/book.js');
 //   }
 // });
 
-router.get('/booklist', async (req, res) => {
-  res.render('books/booklist.ejs')
-})
 
 module.exports = router;
 

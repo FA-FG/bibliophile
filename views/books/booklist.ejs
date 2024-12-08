@@ -1,6 +1,29 @@
 <body>
   <h1>Bibliophile</h1>
   <h1>User Book List</h1>
- 
- 
+  <% if (books && books.length > 0) { %>
+    <ul>
+      <% books.forEach(book => { %>
+        <li>
+          <h2><%= book.name %></h2>
+          <p><strong>Author:</strong> <%= book.author %></p>
+          <p><strong>Genre:</strong> <%= book.genre %></p>
+          <p><strong>Published:</strong> <%= book.publish_date %></p>
+          <p><strong>Rating:</strong> <%= book.rating %></p>
+          <p><strong>Description:</strong> <%= book.description %></p>
+        </li>
+        <label for="readingStatus">Status:</label>
+    <select name="readingStatus[]" id="readingStatus">
+      <% readingStatus.forEach((status) =>{ %>
+      <option value="<%= status._id %>"><%= status.name %></option>
+      <% })%>
+    </select>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>You have no books in your list.</p>
+  <% } %>
+
+  <!-- Add links to other pages if needed -->
+  <a href="/books/book-page">Add more books</a>
 </body>
