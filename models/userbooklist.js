@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const userBookListSchema= new mongoose.Schema({
-  book:{
+  bookName:{
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },

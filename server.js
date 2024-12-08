@@ -42,11 +42,13 @@ app.use(
 // require controllers
 const authCtrl = require('./controllers/auth')
 const bookCtrl = require('./controllers/books')
+const listCtrl = require('./controllers/booklists.js')
 
 
 // use it 
 app.use('/auth', authCtrl)
 app.use('/books', isSignedIn, bookCtrl)
+app.use('/booklists', isSignedIn, listCtrl)
 
 
 
