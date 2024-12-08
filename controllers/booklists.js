@@ -47,7 +47,7 @@ const Book = require('../models/book.js');
 //   }
 // });
 
-router.get('/', async (req, res) => {
+router.get('/booklist', async (req, res) => {
   res.render('books/booklist.ejs')
 })
 
