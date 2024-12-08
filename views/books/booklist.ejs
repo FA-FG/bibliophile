@@ -1,26 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Book List</title>
+  <link rel="stylesheet" href="/path/to/your/styles.css"> <!-- Add your CSS file here -->
+</head>
 <body>
-  <h1>Bibliophile</h1>
-  <h1>User Book List</h1>
+  <h1>Your Book List</h1>
+
   <% if (books && books.length > 0) { %>
-    <ul>
-      <% books.forEach(book => { %>
-        <li>
-          <%= (book.image) %>
-          <h3><%= book.name %></h3>
-          <p><strong>Author:</strong> <%= book.author %></p>
-        </li>
-        <label for="readingStatus">Status:</label>
-    <select name="readingStatus[]" id="readingStatus">
-      <% readingStatus.forEach((status) =>{ %>
-      <option value="<%= status._id %>"><%= status.name %></option>
-      <% })%>
-    </select>
+    <div id="book-details" class="book-list">
+      <% books.forEach(function(book) { %>
+        <div class="book-div">
+          <h3><%= book.title %></h3> 
+          <% if (book.image) { %>
+            <img src="<%= book.image %>" alt="<%= book.name %>" class="book-image" />
+          <% } else { %>
+            <img width="130" src="/img/cover.png" alt="<%= book.name %>" class="book-image" />
+          <% } %>
+          
+          <!-- Display the Book's Reading Status -->
+          <p>Status: <%= book.status %></p>
+
+          <!-- Link to View More Details about the Book -->
+          <p><a href="/books/show/<%= book._id %>" class="view-link">View</a></p>
+        </div>
       <% }); %>
-    </ul>
+    </div>
   <% } else { %>
-    <p>You have no books in your list.</p>
+    <p>You haven't added any books to your list yet.</p>
   <% } %>
 
-  <!-- Add links to other pages if needed -->
-  <a href="/books/book-page">Add more books</a>
+  <!-- Link to Add More Books -->
+  <a href="/books/book-page" class="add-more-books-link">Add more books</a>
 </body>
+</html>

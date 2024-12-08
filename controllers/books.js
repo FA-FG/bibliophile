@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const axios = require('axios')
 
-const List = require('../models/userbooklist.js')
 const User = require('../models/user.js')
 const Book = require('../models/book.js')
 const Userbooklist = require('../models/userbooklist.js')
@@ -21,42 +20,69 @@ router.post('/show/:id', async (req, res) => {
 
   console.log(userId)
 
-  try {
+try {
     // Get the book by id
       const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
 
       const bookData = response.data.volumeInfo;
 
-      // make sure no redundent book are added
-      let inBook = await Book.findOne({ name: bookData.title })
+      const hasList = await Userbooklist.findOne({user: userId})
+      console.log(hasList)
 
-      if (!inBook) {
-          const bookToAdd = new Book({
-              name: bookData.title,
-              author: bookData.authors ? bookData.authors.join(', ') : 'Unknown',
-              genre: bookData.categories ? bookData.categories.join(', ') : 'Unknown',
-              publish_date: bookData.publishedDate || 'Unknown',
-              description: bookData.description || 'No description is available',
-              rating: bookData.averageRating || 'No rating is available',
-          });
+      let bookToAdd = await Book.findOne({ name: bookData.title });
 
-          await bookToAdd.save();
+      if (!bookToAdd) {
+        bookToAdd = new Book({
+            name: bookData.title,
+            author: bookData.authors ? bookData.authors.join(', ') : 'Unknown',
+            genre: bookData.categories ? bookData.categories.join(', ') : 'Unknown',
+            publish_date: bookData.publishedDate || 'Unknown',
+            description: bookData.description || 'No description is available',
+            rating: bookData.averageRating || 'No rating is available',
+        });
+
+        await bookToAdd.save();
+        console.log("added book")
+      } else {
+        console.log("not added, book already exist")
+      }
+    
+
+      if (hasList){
+        // just push the book to the book list
+        console.log("has list already")
+
+        if (!hasList.bookName.includes(bookToAdd._id)) {
+
+          hasList.bookName.push(bookToAdd._id)
+          await hasList.save()
+
+          console.log("book is pushed")
+        }else{
+          console.log("book is already there")
+        }
 
 
-          const addToList = new Userbooklist({
-            bookName: bookToAdd._id,  
-            user: userId,      
-            readingStatus: 'Want to Read'  
-          });
-          await addToList.save();
-          
+
+    } else {
+        const addToList = new Userbooklist({
+          bookName: [bookToAdd._id],  
+          user: userId,      
+          readingStatus: 'Want to Read'  
+        });
+        
+        await addToList.save();
+        console.log("add new usr-list")
       }
       res.redirect('/books/book-page') 
 
-  } catch (error) {
-      console.error(error)
+  }
+
+  catch (error) {
+    console.error(error)
   }
 })
+
 
 
 
@@ -74,7 +100,7 @@ router.get('/book-page', async (req, res) => {
 // geth the books data from the api
   const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=bestseller&startIndex=0&maxResults=40&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
   
-  // (`https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
+  // (`https://www.googl-eapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
 
   // save the book data in a var
   const booksData = response.data.items
