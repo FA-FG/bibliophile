@@ -13,15 +13,29 @@
     <div id="book-details" class="book-list">
       <% books.forEach(function(book) { %>
         <div class="book-div">
-          <h3><%= book.title %></h3> 
+          <!-- Display the Book's Name -->
+          <h3><%= book.name %></h3> 
+          
+          <!-- Display the Book's Image -->
           <% if (book.image) { %>
             <img src="<%= book.image %>" alt="<%= book.name %>" class="book-image" />
           <% } else { %>
             <img width="130" src="/img/cover.png" alt="<%= book.name %>" class="book-image" />
           <% } %>
           
+          <!-- Status Dropdown -->
+          <form action="/books/update-status/<%= book._id %>" method="POST">
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+              <% statusOptions.forEach(function(status) { %>
+                <option value="<%= status %>" <%= book.status === status ? 'selected' : '' %>><%= status %></option>
+              <% }); %>
+            </select>
+            
+          </form>
+
           <!-- Display the Book's Reading Status -->
-          <p>Status: <%= book.status %></p>
+          
 
           <!-- Link to View More Details about the Book -->
           <p><a href="/books/show/<%= book._id %>" class="view-link">View</a></p>

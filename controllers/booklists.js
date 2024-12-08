@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/book');  // Your Book model
-const axios = require('axios')
+const axios = require('axios');
 const Userbooklist = require('../models/userbooklist');  // Your Userbooklist model
-
-
 
 // Render the user's booklist page
 router.get('/booklist', async (req, res) => {
@@ -15,7 +13,7 @@ router.get('/booklist', async (req, res) => {
     const userBookList = await Userbooklist.findOne({ user: userId }).populate('bookName');
 
     if (!userBookList || !userBookList.bookName.length) {
-      return res.render('books/booklist.ejs', { books: [] }); // If no books, send an empty array
+      return res.render('books/booklist.ejs', { books: [], statusOptions: ['Want to Read', 'Currently Reading', 'Finished Reading'] }); // If no books, send an empty array
     }
 
     // Get the book details from the populated bookName field
@@ -26,7 +24,8 @@ router.get('/booklist', async (req, res) => {
       _id: book._id,
     }));
 
-    res.render('books/booklist.ejs', { books });
+    // Pass books and status options to the view
+    res.render('books/booklist.ejs', { books, statusOptions: ['Want to Read', 'Currently Reading', 'Finished Reading'] });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching book list');
@@ -48,6 +47,37 @@ router.get('/show/:id', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching book details');
+  }
+});
+
+// Route to handle updating the book's status
+router.post('/update-status/:bookId', async (req, res) => {
+  const { status } = req.body; // Get the new status from the form
+  const userId = req.session.user._id;
+  const bookId = req.params.bookId;
+
+  try {
+    // Find the user's book list
+    const userBookList = await Userbooklist.findOne({ user: userId });
+
+    if (!userBookList) {
+      return res.status(404).send('User book list not found');
+    }
+
+    // Find the book and update its status
+    const bookIndex = userBookList.bookName.indexOf(bookId);
+    if (bookIndex === -1) {
+      return res.status(404).send('Book not found in your list');
+    }
+
+    // Update the status of the selected book
+    userBookList.readingStatus = status; // Update status for all books in the list (can be customized for individual books if needed)
+
+    await userBookList.save();
+    res.redirect('/books/booklist'); // Redirect to the updated book list page
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating book status');
   }
 });
 
@@ -77,51 +107,4 @@ router.post('/book-page', async (req, res) => {
   }
 });
 
-
-
-
-// // Route to display the user's book list
-// router.get('/booklist', async (req, res) => {
-//   const userId = req.session.user._id;  // Get userId from the session
-
-//   try {
-//     // Find all Userbooklist entries for the logged-in user and populate the `bookName` field with full book details
-//     const userBooks = await Userbooklist.find({ user: userId })
-//       .populate('bookName')  // Populate the `bookName` field with book details from the Book model
-//       .exec();
-
-//     // Extract the populated books
-//     const books = userBooks.map(userBook => userBook.bookName);  // This will give you an array of full book details
-
-//     // Render the booklist.ejs page with the list of books
-//     res.render('books/booklist.ejs', { books: books });
-//   } catch (error) {
-//     console.error('Error retrieving books:', error);
-//     res.status(500).send('Error retrieving books');
-//   }
-// });
-
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
