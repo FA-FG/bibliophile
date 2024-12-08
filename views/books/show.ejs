@@ -24,13 +24,15 @@
     <br>
     </div>
 
-    <!-- <button> Remove From my list </button>  -->
+   
 
 <form action="/books/show/:id" method="POST">
     <input type="hidden" name="bookId" value="<%= book.id %>">
     
     <button type="submit">Add to my list</button>
 </form> 
+
+<button> Remove From my list </button> 
 
     <a href="/books/book-page">Book Page</a>
 
