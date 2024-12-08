@@ -7,26 +7,80 @@ const User = require('../models/user.js');
 const Book = require('../models/book.js');
 
 
-// Route to display the list of books for a specific user
-router.get('/:Id', async (req, res) => {
-  const userId = req.params.userId;  // Get the user ID from the URL parameter
+router.get('/booklist', async (req, res) => {
+  res.render('books/booklist.ejs')
+})
+
+
+
+
+// Route to display the user's book list
+// router.get('/booklist', async (req, res) => {
+//   const userId = req.session.user._id;  // Get the userId from the session
+// })
+
+
+// Route to retrieve and display the user's book list
+router.get('/booklist', async (req, res) => {
+  const userId = req.session.user._id;  // Retrieve the logged-in user's ID from the session
 
   try {
-    // Retrieve the user's book list and populate the book details from the Book collection
-    const userBooks = await List.find({ user: userId })
-      .populate('bookName')  // Populate the `bookName` field with book details
+    // Query Userbooklist to get the books associated with the logged-in user
+    const userBooks = await Userbooklist.find({ user: userId })
+      .populate('bookName')  // Populate the `bookName` field with full book details
       .exec();
 
-    // Extract the book details from the populated results
+    // Extract the book details from the populated `bookName` field
     const books = userBooks.map(userBook => userBook.bookName);
 
-    // Render the 'booklist.ejs' page and pass the books array
-    res.render('booklist', { books: books });
+    // Render the `booklist.ejs` page and pass the books to it
+    res.render('books/booklist.ejs', { books });
   } catch (error) {
-    console.error('Error retrieving books:', error);
+    console.error('Error retrieving user books:', error);
     res.status(500).send('Error retrieving books');
   }
 });
+
+
+
+
+
+
+
+
+
+// // Route to display the list of books for a specific user
+// router.get('/booklist', async (req, res) => {
+//   const userId = req.session.user._Id;  // Get the user ID from the URL parameter
+
+//   try {
+//     // Retrieve the user's book list and populate the book details from the Book collection
+//     const userBooks = await List.find({ user: userId })
+//       .populate('bookName')  // Populate the `bookName` field with book details
+//       .exec();
+
+//     // Extract the book details from the populated results
+//     const books = userBooks.map(userBook => userBook.bookName);
+
+//     // Render the 'booklist.ejs' page and pass the books array
+//     res.render('booklists/booklist', { books: books });
+//   } catch (error) {
+//     console.error('Error retrieving books:', error);
+//     res.status(500).send('Error retrieving books');
+//   }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

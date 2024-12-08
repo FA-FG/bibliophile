@@ -3,11 +3,13 @@ const mongoose = require('mongoose')
 const userBookListSchema= new mongoose.Schema({
   bookName:{
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: "Book"
   },
   user:{
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref: "User"
 
   },
   readingStatus: {
