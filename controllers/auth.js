@@ -1,10 +1,9 @@
-//const user = require('../models/user');
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 
 const router = require('express').Router();
 
-// routers/ api's/ controller functions all means same thing
+
 
 
 router.get('/sign-up', (req,res)=>

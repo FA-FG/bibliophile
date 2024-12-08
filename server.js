@@ -9,6 +9,8 @@ const session = require('express-session')
 const passUserToView = require("./middleware/pass-user-to-view.js")
 const isSignedIn = require("./middleware/is-signed-in.js");
 
+// bootstrap
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 // connect to mongodb "database"
 mongoose.connect(process.env.MONGODB_URI)
@@ -28,23 +30,26 @@ app.use(
     saveUninitialized: true,
   }))
  
+
 // custom middleware
   app.use(passUserToView);
 
   // to get files form public
   app.use(express.static('public'));
 
-
-
+ 
+  
 // require controllers
 const authCtrl = require('./controllers/auth')
 const bookCtrl = require('./controllers/books')
 const listCtrl = require('./controllers/booklists.js')
 
+
 // use it 
 app.use('/auth', authCtrl)
 app.use('/books', isSignedIn, bookCtrl)
 app.use('/booklists', isSignedIn, listCtrl)
+
 
 
 
