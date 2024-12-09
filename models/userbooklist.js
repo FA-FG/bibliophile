@@ -15,7 +15,8 @@ const userBookListSchema= new mongoose.Schema({
   readingStatus: {
     type: String,
     enum: ['Want to Read', 'Currently Reading', 'Finished Reading'],
-    default: 'Want to Read'
+    default: 'Want to Read',
+    ref:"status"
   },
 
 })
