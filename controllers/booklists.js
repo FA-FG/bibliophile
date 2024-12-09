@@ -32,41 +32,37 @@ router.get('/booklist', async (req, res) => {
   }
 });
 
-// Route to handle updating the book's status
+// updating the book's status
 router.post('/booklist', async (req, res) => {
-  const { status, bookId } = req.body; // Get the new status and bookId from the form
+  const { status, bookId } = req.body; 
   const userId = req.session.user._id;
 
+
+  console.log("bookId", bookId)
   try {
     // Find the user's book list
-    const userBookList = await Userbooklist.findOne({ user: userId }).populate('bookName');
+    // const userBookList = await Userbooklist.findById(bookId).populate('bookName');
+    // console.log(userBookList)
+
+    const userBookList = await Userbooklist.find({user: userId})
     console.log(userBookList)
     
     if (!userBookList) {
       return res.status(404).send('User book list not found');
     }
-    
-    // Find the index of the book to update its status
-    const bookIndex = userBookList.bookName.findIndex(book => book._id.toString() === bookId);
-
-    if (bookIndex === -1) {
-      return res.status(404).send('Book not found in your list');
-    }
-
-    // Update the status of the specific book (instead of updating all books)
-    userBookList.readingStatus = status; // This assumes you want to set status for all books, update this line for individual books if needed
-    await userBookList.save();
+        
+    userBookList.readingStatus = status; 
+    // await userBookList.save();
 
     // After saving the updated book list, render the updated booklist.ejs
     const updatedUserBookList = await Userbooklist.findOne({ user: userId }).populate('bookName');
     const books = updatedUserBookList.bookName.map(book => ({
       name: book.name,
       image: book.img,
-      status: updatedUserBookList.readingStatus,  // Assuming the status is the same for all books in the list
-      _id: book._id,
+      status: updatedUserBookList.readingStatus,  
     }));
 
-    // Pass the updated book list and status options to the view
+   
     res.render('books/booklist.ejs', { books, statusOptions: ['Want to Read', 'Currently Reading', 'Finished Reading'] });
 
   } catch (error) {

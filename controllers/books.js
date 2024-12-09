@@ -26,8 +26,8 @@ try {
 
       const bookData = response.data.volumeInfo;
 
-      const hasList = await Userbooklist.findOne({user: userId})
-      console.log(hasList)
+      const hasBookinList = await Userbooklist.findOne({user: userId, bookName: bookId})
+      console.log(hasBookinList)
 
       let bookToAdd = await Book.findOne({ name: bookData.title });
       const i_link = bookData.imageLinks ? bookData.imageLinks.thumbnail : ""
@@ -50,14 +50,14 @@ try {
       }
     
 
-      if (hasList){
+      if (!hasBookinList){
         // just push the book to the book list
-        console.log("has list already")
+        console.log("Add the book")
 
-        if (!hasList.bookName.includes(bookToAdd._id)) {
-
-          hasList.bookName.push(bookToAdd._id)
-          await hasList.save()
+        await Userbooklist.save({
+          bookName: bookId,  // ObjectId of the book
+          user: userId
+        })
 
           console.log("book is pushed")
         }else{
@@ -66,7 +66,7 @@ try {
 
 
 
-    } else {
+       } else {
         const addToList = new Userbooklist({
           bookName: [bookToAdd._id],  
           user: userId,      

@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const userBookListSchema= new mongoose.Schema({
-  bookName:[{
+  bookName:{
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref:'Book'
-  }],
+  },
   user:{
     type: mongoose.Schema.Types.ObjectId,
     required: true,
