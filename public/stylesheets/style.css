@@ -3,7 +3,7 @@ body {
   font-family: "Times New Roman", Times, serif;
   margin: 0;
   padding: 0;
-  height: 100%;
+  height: 100vh;
   color: #fff;  /* Text color for readability */
   position: relative; /* Required for the pseudo-element */
   background-color: #f4f4f4;  /* Fallback background color */
@@ -20,8 +20,8 @@ body::before {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  opacity: 0.55;  /* Apply opacity only to the background */
-  z-index: -1; /* Keep it behind the content */
+  opacity: 0.55; 
+  z-index: -1; 
 }
 
 /* Main container styling */
@@ -34,7 +34,7 @@ body::before {
 h1 {
   text-align: center;
   font-size: 2em;
-  color: #fff; /* White color for the title */
+  color: #053a89; /* White color for the title */
   margin-bottom: 20px;
 }
 
