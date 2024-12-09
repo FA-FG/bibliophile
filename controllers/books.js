@@ -11,6 +11,33 @@ router.get('/', async (req, res) => {
 })
 
 
+router.delete('/show/:id', async (req, res) => {
+  const userId = req.session.user._id;  // User ID from session
+  const bookId = req.body.bookId;  // The book ID from the request body
+  console.log(userId);
+  console.log(`hello ${bookId}`);
+
+  try {
+    // Find the user's book list by the user ID
+    const bookList = await Userbooklist.findOne({ user: userId });
+
+    if (bookList && bookList.bookName.includes(bookId)) {
+      // Remove the bookId from the bookName array
+      bookList.bookName.pull(bookId);
+      await bookList.save();
+      console.log('Book removed from the list');
+    }
+
+    res.redirect('/books/book-page');  // Redirect after successful removal
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error removing book from list');
+  }
+});
+
+
+
 
 
 router.post('/show/:id', async (req, res) => {
@@ -18,7 +45,7 @@ router.post('/show/:id', async (req, res) => {
   const userId =  req.session.user._id
   const  bookId  = req.body.bookId
 
-  console.log(userId)
+  // console.log(userId)
 
 try {
     // Get the book by id
@@ -27,10 +54,9 @@ try {
       const bookData = response.data.volumeInfo;
 
       const hasList = await Userbooklist.findOne({user: userId})
-      console.log(hasList)
+      // console.log(hasList)
 
       let bookToAdd = await Book.findOne({ name: bookData.title });
-      const i_link = bookData.imageLinks ? bookData.imageLinks.thumbnail : ""
 
       if (!bookToAdd) {
         bookToAdd = new Book({
@@ -40,7 +66,7 @@ try {
             publish_date: bookData.publishedDate || 'Unknown',
             description: bookData.description || 'No description is available',
             rating: bookData.averageRating || 'No rating is available',
-            img: i_link || "No image available"
+            id: response.data.id
         });
 
         await bookToAdd.save();
@@ -77,6 +103,7 @@ try {
         console.log("add new usr-list")
       }
       res.redirect('/books/book-page') 
+
 
   }
 
@@ -132,21 +159,56 @@ router.get('/book-page', async (req, res) => {
 });
 
 
+
+
 // Route to handle individual book details
 router.get('/show/:id', async (req, res) => {
   const bookId = req.params.id;  
+  const userId = req.session.user._id;
 
+  // console.log(`hi ${bookId}`)
   
   try {
+    // Fetch book details from the Google Books API
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`);
 
+    // Find the user's book list
+    const userBookList = await Userbooklist.findOne({ user: userId });
 
-    res.render('books/show.ejs', { book: response.data});
+    // Find the book object in the Book collection by Google Books API ID
+    let bookObj = await Book.findOne({ id: bookId });
+    console.log(`11111111111 ${bookObj}`)
+    // console.log(`1234 ${bookObj}`)
+    // const bookObjectId = bookObj._id 
+     
+    // console.log(`111 ${bookObjectId}`)
+
+    let isInUserList = false;
+    
+    // If the user has a book list, check if the book's ID is in the bookName array
+    if (userBookList && userBookList.bookName && bookObj) {
+      // Compare the book's ID with the IDs in the user’s book list (bookName)
+      isInUserList = userBookList.bookName.includes(bookObj._id);  // Compare ObjectIds, not the full object
+    }
+    
+
+    if(bookObj){
+      const bookObjectId = bookObj._id 
+      res.render('books/show.ejs', { book: response.data, bookObj: bookObjectId, isInUserList: isInUserList});
+  
+    }else{
+    
+    res.render('books/show.ejs', { book: response.data, isInUserList: isInUserList});
+    }
+    
 
   } catch (error) {
     console.error(error);
   }
 });
+
+
+
 
 router.post('/book-page', async (req,res)=>
   {
@@ -179,6 +241,8 @@ router.post('/book-page', async (req,res)=>
 
 
   })
+
+  
 
 
 
