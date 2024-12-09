@@ -3,15 +3,14 @@ const mongoose = require('mongoose')
 const userBookListSchema= new mongoose.Schema({
   bookName:[{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Book',
-    required: true
+    required: true,
+    ref:'Book'
   }],
-
-
   user:{
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User'
+    ref:'User'
+
   },
   readingStatus: {
     type: String,

@@ -1,6 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Book List</title>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
 <body>
-  <h1>Bibliophile</h1>
-  <h1>User Book List</h1>
- 
- 
+  <%- include('../partials/_navbar.ejs') %>
+  <h1>Your Book List</h1>
+
+  <% if (books && books.length > 0) { %>
+    <div id="book-details" class="book-list">
+      <% books.forEach(function(book) { %>
+        <div class="book-div">
+          <!-- Display the Book's Name -->
+          <h3><%= book.name %></h3> 
+          
+          <!-- Display the Book's Image -->
+          <% if (book.image) { %>
+            <img src="<%= book.image %>" alt="<%= book.name %>" class="book-image" />
+          <% } else { %>
+            <img width="130" src="/img/cover.png" alt="<%= book.name %>" class="book-image" />
+          <% } %>
+          
+          <!-- Status Dropdown -->
+          <form action="/books/update-status/<%= book._id %>" method="POST">
+            <label for="status" id="status">Status:</label>
+            <select name="status" id="status">
+              <% statusOptions.forEach(function(status) { %>
+                <option value="<%= status %>" <%= book.status === status ? 'selected' : '' %>><%= status %></option>
+              <% }); %>
+            </select>
+            
+          </form>
+
+          <!-- Display the Book's Reading Status -->
+          
+
+          <!-- Link to View More Details about the Book -->
+          <p><a href="/books/show/<%= book._id %>" class="view-link">View</a></p>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <p>You haven't added any books to your list yet.</p>
+  <% } %>
+
+  <!-- Link to Add More Books -->
+  <a href="/books/book-page" class="add-more-books-link">Add more books</a>
 </body>
+</html>
