@@ -44,7 +44,7 @@ router.post('/show/:id', async (req, res) => {
 
 
           const addToList = new Userbooklist({
-            book: bookToAdd._id,  
+            bookName: bookToAdd._id,  
             user: userId,      
             readingStatus: 'Want to Read'  
           });

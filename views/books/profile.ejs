@@ -1,0 +1,17 @@
+<body>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <h1>Your Profile</h1>
+  <p>Welcome to your profile!</p>
+  <form action="/profile/<%= user._id %>?_method=PUT" method="POST">
+    <label for="profilePicture">Profile Picture:</label>
+    <input type="file" name="profilePicture" />
+    <nav>
+      <label for="name">UserName:</label>
+      <input type="text" name="username" value="<%= user.name %>" required />
+    </nav>
+    <label for="password">New Password:</label>
+    <input type="password" name="password" />
+
+    <button type="submit">Update Profile</button>
+  </form>
+</body>
