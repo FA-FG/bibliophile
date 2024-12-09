@@ -6,8 +6,9 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const session = require('express-session')
-const passUserToView = require("./middleware/pass-user-to-view.js")
-const isSignedIn = require("./middleware/is-signed-in.js");
+const passUserToView = require('./middleware/pass-user-to-view.js')
+const isSignedIn = require('./middleware/is-signed-in.js')
+app.set('view engine', 'ejs')
 
 // bootstrap
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,37 +28,32 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-  }))
- 
+    saveUninitialized: true
+  })
+)
 
 // custom middleware
-  app.use(passUserToView);
+app.use(passUserToView)
 
-  // to get files form public
-  app.use(express.static('public'));
+// to get files form public
+app.use(express.static('public'))
 
- 
-  
 // require controllers
 const authCtrl = require('./controllers/auth')
 const bookCtrl = require('./controllers/books')
 const listCtrl = require('./controllers/booklists.js')
+const profileCtrl = require('./controllers/profile.js')
 
-
-// use it 
+// use it
 app.use('/auth', authCtrl)
 app.use('/books', isSignedIn, bookCtrl)
 app.use('/booklists', isSignedIn, listCtrl)
-
-
-
+app.use('/profile', isSignedIn, profileCtrl)
 
 app.get('/', async (req, res) => {
   res.render('index.ejs')
 })
 
-
 app.listen(3000, () => {
-  console.log('listning 3000')
+  console.log('listning :3000')
 })
