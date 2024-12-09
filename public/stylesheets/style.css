@@ -1,13 +1,36 @@
-/* Apply global font and background image to the entire page */
+.bookbody{
+  font-family: "Times New Roman", Times, serif;
+  margin: 0;
+  padding: 0;
+  
+  color: #fff;  
+  position: relative; 
+  background-color: #f4f4f4;   
+}
+.bookbody::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-image: url('https://i.pinimg.com/736x/bf/4e/aa/bf4eaa44e7647807fa56239b65879bd2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.55; 
+  z-index: -1; 
+}
+
 body {
   font-family: "Times New Roman", Times, serif;
   margin: 0;
   padding: 0;
-  height: 100vh;
-  color: #fff;  /* Text color for readability */
-  position: relative; /* Required for the pseudo-element */
-  background-color: #f4f4f4;  /* Fallback background color */
+  /* height: auto; */
+  color: #fff;  
+  position: relative; 
+  background-color: #f4f4f4;  
 }
+
 
 body::before {
   content: "";
@@ -15,7 +38,7 @@ body::before {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-image: url('https://i.pinimg.com/736x/bf/4e/aa/bf4eaa44e7647807fa56239b65879bd2.jpg');
   background-size: cover;
   background-position: center;
@@ -36,6 +59,11 @@ h1 {
   font-size: 2em;
   color: #053a89; /* White color for the title */
   margin-bottom: 20px;
+}
+
+ h2 {
+  text-align: center;
+  color: #333;
 }
 
 #book-details {
@@ -146,6 +174,29 @@ a {
   display: inline-block; /* Ensure links appear in a row */
   margin-right: 5px; /* Add space between links */
   padding: 5px; /* Add padding if desired to make links larger */
+}
+
+
+#search {
+  width: 250px;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#searchtn {
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+#searchtn:hover {
+  background-color: #0056b3;
 }
 
 
