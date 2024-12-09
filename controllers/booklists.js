@@ -19,7 +19,7 @@ router.get('/booklist', async (req, res) => {
     // Get the book details from the populated bookName field
     const books = userBookList.bookName.map(book => ({
       name: book.name,
-      image: book.image,
+      image: book.img,
       status: userBookList.readingStatus, // Assuming the status is the same for all books in the list
       _id: book._id,
     }));

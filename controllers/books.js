@@ -30,6 +30,7 @@ try {
       console.log(hasList)
 
       let bookToAdd = await Book.findOne({ name: bookData.title });
+      const i_link = bookData.imageLinks ? bookData.imageLinks.thumbnail : ""
 
       if (!bookToAdd) {
         bookToAdd = new Book({
@@ -39,6 +40,7 @@ try {
             publish_date: bookData.publishedDate || 'Unknown',
             description: bookData.description || 'No description is available',
             rating: bookData.averageRating || 'No rating is available',
+            img: i_link || "No image available"
         });
 
         await bookToAdd.save();
