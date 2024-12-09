@@ -1,21 +1,24 @@
 const mongoose = require('mongoose')
 
 const userBookListSchema= new mongoose.Schema({
-  bookName:{
+  bookName:[{
     type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
+    required: true,
+    ref:'Book'
+  }],
   user:{
     type: mongoose.Schema.Types.ObjectId,
-    required: true
+    required: true,
+    ref:'User'
 
   },
   readingStatus: {
     type: String,
     enum: ['Want to Read', 'Currently Reading', 'Finished Reading'],
-    default: 'Want to Read'
+    default: 'Want to Read',
+    ref:"status"
   },
 
 })
-const List = mongoose.model('List', userBookListSchema)
-module.exports=List
+const Userbooklist = mongoose.model('Userbooklist', userBookListSchema)
+module.exports=Userbooklist

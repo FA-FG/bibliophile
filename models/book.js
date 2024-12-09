@@ -28,6 +28,14 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  id: {
+    type: String,
+    required: false,
+  },
+  img: {
+    type: String,
+    required: false,
+  },
   
 });
 

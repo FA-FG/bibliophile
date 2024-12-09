@@ -7,7 +7,7 @@
     <title>Book-page</title>
 
 </head>
-<body>
+<body class="bookbody">
 
 <%- include('../partials/_navbar.ejs') %>
 
@@ -16,7 +16,7 @@
 
 <form action="/books/book-page" method="POST">
 <input type="text" placeholder="Search" id="search" name="search" >
-<button type="submit">Search</button>
+<button type="submit" id="searchtn">Search</button>
 
 </form> 
 
