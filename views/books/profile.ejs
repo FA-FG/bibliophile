@@ -1,7 +1,9 @@
 <body>
+  <%- include('../partials/_navbar.ejs') %>
   <link rel="stylesheet" href="/stylesheets/style.css" />
   <h1>Your Profile</h1>
   <p>Welcome to your profile!</p>
+  <div id="profile-img"></div>
   <form action="/profile/<%= user._id %>?_method=PUT" method="POST">
     <label for="profilePicture">Profile Picture:</label>
     <input type="file" name="profilePicture" />
