@@ -1,22 +1,30 @@
 <link rel="stylesheet" href="/stylesheets/style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Dancing+Script:wght@400..700&family=Great+Vibes&display=swap" rel="stylesheet">
 <body>
   <%- include('../partials/_navbar.ejs') %>
-  <h1>Create a new account</h1>
-  <div class="sign-in">
-
-    <form action="/auth/sign-up" method="post">
-      <label>Username: </label>
-      <input type="text" name="username" id="username" required/>
-      <br /><br />
-      <label>Password: </label>
-      <input type="password" name="password" id="password" required/>
-      <br /><br />
-      <label>Confirm Password:</label>
-      <input type="password" name="confirmPassword" id="confirmPassword" required/>
-      <br /><br />
-      <button type="submit">Sign Up</button>
-    </form>
-    <form action="/auth/sign-up" method="POST"></form>
+  <div class="wow">
+    <h1>Create a new account</h1>
+    <div class="sign-in">
+  
+      <form action="/auth/sign-up" method="post">
+        <label>Username: </label>
+        <input type="text" name="username" id="username" required/>
+        <br /><br />
+        <label>Password: </label>
+        <input type="password" name="password" id="password" required/>
+        <br /><br />
+        <label>Confirm Password:</label>
+        <input type="password" name="confirmPassword" id="confirmPassword" required/>
+        <br /><br />
+        <button type="submit">Sign Up</button>
+      </form>
+      <form action="/auth/sign-up" method="POST"></form>
+  
+  
+  
+    </div>
 
 
 

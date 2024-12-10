@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Book-details</title>
 </head>
-<body>
+<body class="showthebook">
 
 <%- include('../partials/_navbar.ejs') %> 
 
@@ -27,14 +27,14 @@
     
 
 <% if (isInUserList) { %>
-    <form action="/books/show/<%= book.id %>?_method=DELETE" method="POST">
+    <form id="show" action="/books/show/<%= book.id %>?_method=DELETE" method="POST">
       <input type="hidden" name="bookId" value="<%= bookObj %>">
-      <button type="submit">Remove from my list</button>
+      <button id="remove-book" type="submit">Remove from my list</button>
     </form>
   <% } else { %>
     <form action="/books/show/<%= book.id %>" method="POST">
       <input type="hidden" name="bookId" value="<%= book.id %>">
-      <button type="submit">Add to my list</button>
+      <button id="adding" type="submit">Add to my list</button>
     </form>
   <% } %>
 

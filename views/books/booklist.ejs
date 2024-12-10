@@ -6,14 +6,14 @@
   <title>Your Book List</title>
   <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
-<body>
+<body class="booklist-body">
   <%- include('../partials/_navbar.ejs') %>
   <h1>Your Book List</h1>
 
   <% if (books && books.length > 0) { %>
-    <div id="book-details" class="book-list">
+    <div id="bookd" class="book-list">
       <% books.forEach(function(book) { %>
-        <div class="book-div">
+        <div class="book-divtwo">
           <!-- Display the Book's Name -->
           <h3><%= book.name %></h3> 
           
@@ -34,13 +34,13 @@
             </select>
             
             <input type="hidden" name="bookId" value="<%= book._id %>">
-            <button type="submit">Update Status</button> 
+            <button id="book-status" type="submit">Update Status</button> 
           </form>
 
           <!-- Correct DELETE Form -->
 <form action="/booklists/booklist/<%= book._id %>?_method=DELETE" method="POST">
   <input type="hidden" name="bookId" value="<%= book._id %>">
-  <button type="submit">Remove from my list</button>
+  <button id="remove-book" type="submit">Remove from my list</button>
 </form>
 
           
