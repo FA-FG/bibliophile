@@ -32,13 +32,18 @@
                 <option value="<%= status %>" <%= book.status === status ? 'selected' : '' %>><%= status %></option>
               <% }); %>
             </select>
-            <!-- Hidden field to send the book's ID -->
+            
             <input type="hidden" name="bookId" value="<%= book._id %>">
-            <button type="submit">Update Status</button> <!-- Submit button -->
+            <button type="submit">Update Status</button> 
           </form>
 
-          <!-- Link to View More Details about the Book -->
-          <p><a href="/books/show/<%= book._id %>" class="view-link">View</a></p>
+          <!-- Correct DELETE Form -->
+<form action="/booklists/booklist/<%= book._id %>?_method=DELETE" method="POST">
+  <input type="hidden" name="bookId" value="<%= book._id %>">
+  <button type="submit">Remove from my list</button>
+</form>
+
+          
         </div>
       <% }); %>
     </div>

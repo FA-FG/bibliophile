@@ -26,17 +26,7 @@
 
     
 
-<% if (isInUserList) { %>
-    <form action="/books/show/<%= book.id %>?_method=DELETE" method="POST">
-      <input type="hidden" name="bookId" value="<%= bookObj %>">
-      <button type="submit">Remove from my list</button>
-    </form>
-  <% } else { %>
-    <form action="/books/show/<%= book.id %>" method="POST">
-      <input type="hidden" name="bookId" value="<%= book.id %>">
-      <button type="submit">Add to my list</button>
-    </form>
-  <% } %>
+
 
   <a href="/books/book-page">Book Page</a>
 </body> 
