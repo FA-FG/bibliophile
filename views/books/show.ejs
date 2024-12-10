@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<%- include('../partials/_navbar.ejs') %>
+<%- include('../partials/_navbar.ejs') %> 
 
 <div id="show-book-details">
     <h2><%= book.title %></h2>
@@ -27,6 +27,7 @@
     
 
 
+
 <% if (isInUserList) { %>
     <form action="/books/show/<%= book.id %>?_method=DELETE" method="POST">
       <input type="hidden" name="bookId" value="<%= bookObj %>">
@@ -40,5 +41,5 @@
   <% } %>
 
   <a href="/books/book-page">Book Page</a>
-</body>
+</body> 
 </html>

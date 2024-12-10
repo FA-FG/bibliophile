@@ -12,23 +12,22 @@ router.get('/', async (req, res) => {
 
 
 router.delete('/show/:id', async (req, res) => {
-  const userId = req.session.user._id;  // User ID from session
-  const bookId = req.body.bookId;  // The book ID from the request body
-  console.log(userId);
-  console.log(`hello ${bookId}`);
+  const userId = req.session.user._id;  
+  const bookId = req.body.bookId;  
+  // console.log(userId);
+  // console.log(`hello ${bookId}`);
 
   try {
     // Find the user's book list by the user ID
-    const bookList = await Userbooklist.findOne({ user: userId });
+    const bookList = await Userbooklist.findOne({ user: userId, bookName: bookId });
 
-    if (bookList && bookList.bookName.includes(bookId)) {
-      // Remove the bookId from the bookName array
-      bookList.bookName.pull(bookId);
-      await bookList.save();
+    if (bookList) {
+      await Userbooklist.deleteOne({ user: userId, bookName: bookId })
+    
       console.log('Book removed from the list');
     }
 
-    res.redirect('/books/book-page');  // Redirect after successful removal
+    res.redirect('/books/book-page');  
 
   } catch (error) {
     console.error(error);
@@ -45,7 +44,8 @@ router.post('/show/:id', async (req, res) => {
   const userId =  req.session.user._id
   const  bookId  = req.body.bookId
 
-  // console.log(userId)
+  // console.log(`1111111111111111111${userId}`)
+  // console.log(`222222222${bookId}`)
 
 try {
     // Get the book by id
@@ -53,10 +53,11 @@ try {
 
       const bookData = response.data.volumeInfo;
 
-      const hasList = await Userbooklist.findOne({user: userId})
-      // console.log(hasList)
 
+
+      // let bookToAdd = await Book.findOne({ id: bookId });
       let bookToAdd = await Book.findOne({ name: bookData.title });
+      const i_link = bookData.imageLinks ? bookData.imageLinks.thumbnail : ""
 
       if (!bookToAdd) {
         bookToAdd = new Book({
@@ -66,7 +67,8 @@ try {
             publish_date: bookData.publishedDate || 'Unknown',
             description: bookData.description || 'No description is available',
             rating: bookData.averageRating || 'No rating is available',
-            id: response.data.id
+            id: response.data.id,
+            img: i_link || 'No image available'
         });
 
         await bookToAdd.save();
@@ -74,36 +76,26 @@ try {
       } else {
         console.log("not added, book already exist")
       }
-    
 
-      if (hasList){
-        // just push the book to the book list
-        console.log("has list already")
-
-        if (!hasList.bookName.includes(bookToAdd._id)) {
-
-          hasList.bookName.push(bookToAdd._id)
-          await hasList.save()
-
-          console.log("book is pushed")
-        }else{
-          console.log("book is already there")
-        }
-
-
-
-    } else {
+      const hasBookInList = await Userbooklist.findOne({ user: userId, bookName: bookToAdd._id });
+      // console.log(hasBookInList);
+  
+      if (!hasBookInList) {
         const addToList = new Userbooklist({
-          bookName: [bookToAdd._id],  
-          user: userId,      
-          readingStatus: 'Want to Read'  
+          bookName: bookToAdd._id,  // Reference to the Book model's ObjectId
+          user: userId,
+          readingStatus: 'Want to Read'  // Default status
         });
-        
+  
         await addToList.save();
-        console.log("add new usr-list")
+        console.log("Book added to the user's list.");
+      } else {
+        console.log("Book is already in the user's list.");
       }
-      res.redirect('/books/book-page') 
 
+
+
+      res.redirect('/books/book-page') 
 
   }
 
@@ -111,12 +103,6 @@ try {
     console.error(error)
   }
 })
-
-
-
-
-
-
 
 
 
@@ -166,41 +152,35 @@ router.get('/show/:id', async (req, res) => {
   const bookId = req.params.id;  
   const userId = req.session.user._id;
 
-  // console.log(`hi ${bookId}`)
   
   try {
     // Fetch book details from the Google Books API
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`);
 
-    // Find the user's book list
-    const userBookList = await Userbooklist.findOne({ user: userId });
-
-    // Find the book object in the Book collection by Google Books API ID
     let bookObj = await Book.findOne({ id: bookId });
-    console.log(`11111111111 ${bookObj}`)
-    // console.log(`1234 ${bookObj}`)
-    // const bookObjectId = bookObj._id 
-     
-    // console.log(`111 ${bookObjectId}`)
+
+  
+    
 
     let isInUserList = false;
     
-    // If the user has a book list, check if the book's ID is in the bookName array
-    if (userBookList && userBookList.bookName && bookObj) {
-      // Compare the book's ID with the IDs in the user’s book list (bookName)
-      isInUserList = userBookList.bookName.includes(bookObj._id);  // Compare ObjectIds, not the full object
-    }
     
-
+    
+  
     if(bookObj){
+      const userBookList = await Userbooklist.findOne({ user: userId, bookName: bookObj._id });
+      if (userBookList) {
+        isInUserList = true; }
       const bookObjectId = bookObj._id 
+      // res.render('books/show.ejs', { book: response.data, bookObj: bookObjectId});
       res.render('books/show.ejs', { book: response.data, bookObj: bookObjectId, isInUserList: isInUserList});
   
     }else{
     
+    
     res.render('books/show.ejs', { book: response.data, isInUserList: isInUserList});
     }
-    
+    // res.render('books/show.ejs', { book: response.data, bookObj: bookObjectId});
 
   } catch (error) {
     console.error(error);
