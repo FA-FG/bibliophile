@@ -1,17 +1,20 @@
 <link rel="stylesheet" href="/stylesheets/style.css" />
 <body class="sin">
-<%- include('../partials/_navbar.ejs') %>
-<h1>Sign In</h1>
-<div class="sign-in">
-    <form action="/auth/sign-in" method="post">
-        <label">Username:</label>
-        <input type="text" name="username" id="username">
-        <br><br>
-        <label">Password: </label>
-        <input type="password" name="password" id="password">
-        <br><br>
-        <button type="submit">Sign In</button>
-    </form>
+    <%- include('../partials/_navbar.ejs') %>
+    <div class="wow">
 
-</div>
+        <h1>Sign In</h1>
+        <div class="sign-in">
+            <form action="/auth/sign-in" method="post">
+                <label">Username:</label>
+                <input type="text" name="username" id="username">
+                <br><br>
+                <label">Password: </label>
+                <input type="password" name="password" id="password">
+                <br><br>
+                <button type="submit">Sign In</button>
+            </form>
+        
+        </div>
+    </div>
 </body>
