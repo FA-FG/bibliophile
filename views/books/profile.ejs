@@ -1,19 +1,36 @@
 <body>
   <%- include('../partials/_navbar.ejs') %>
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <h1>Your Profile</h1>
-  <p>Welcome to your profile!</p>
-  <div id="profile-img"></div>
-  <form action="/profile/<%= user._id %>?_method=PUT" method="POST">
-    <label for="profilePicture">Profile Picture:</label>
-    <input type="file" name="profilePicture" />
-    <nav>
-      <label for="name">UserName:</label>
-      <input type="text" name="username" value="<%= user.name %>" />
-    </nav>
-    <label for="password">New Password:</label>
-    <input type="password" name="password" />
 
-    <button type="submit">Update Profile</button>
-  </form>
+  <div class="box">
+    <h1>Your Profile</h1>
+    <p>Welcome to your profile!</p>
+    <form
+      action="/profile/<%= user._id %>?_method=PUT"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <label for="profilePicture">Profile Picture:</label>
+      <% if (user.image) { %>
+      <div id="profile-img">
+        <img
+          src="../uploads/<%= user.image %>"
+          alt="<%= user.username %>"
+          class="profilePicture"
+        />
+      </div>
+      <% } %>
+      <input type="file" name="image" accept="image/*" value="" />
+
+
+      <nav>
+        <label for="name">UserName:</label>
+        <input type="text" name="username" value="<%= user.name %>"  />
+      </nav>
+      <label for="password">New Password:</label>
+      <input type="password" name="password" />
+      <br />
+      <button type="submit">Update Profile</button>
+    </form>
+  </div>
 </body>
