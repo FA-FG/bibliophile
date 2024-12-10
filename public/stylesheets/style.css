@@ -395,7 +395,8 @@ form {
 }
 
 /* Book List Styles */
-#book-details {
+
+ #book-details {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -411,13 +412,13 @@ form {
   padding: 20px;
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
-}
+} 
 
 .book-div:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
+} 
+  
 .book-div h3 {
   font-size: 1.4rem;
   margin-bottom: 10px;
@@ -429,7 +430,7 @@ form {
   height: auto;
   margin-bottom: 15px;
   border-radius: 5px;
-}
+} 
 
 .book-div p a {
   text-decoration: none;
@@ -442,45 +443,97 @@ form {
 
 .book-div p a:hover {
   background: #c0392b;
-}
+} 
 
-/* you can remove this  */
-/* Book List Container */
-#bookd {
+#bookd.book-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 40px;
+  gap: 30px;
   margin-top: 30px;
 }
-
-/* Book Card Styles */
 .book-divtwo {
   background: white;
   border: 2px solid #ddd;
   border-radius: 8px;
-  width: 260px;
+  width: 250px;
   padding: 20px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .book-divtwo:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+
+/* Book Title */
 .book-divtwo h3 {
-  font-size: 1.8rem;
+  font-size:large;
   color: #2c3e50;
   margin-bottom: 15px;
 }
 
-/* .book-image {
+/* Book Image */
+.book-image {
   width: 100%;
-  height: auto;
+  height: 250px;
   margin-bottom: 15px;
   border-radius: 5px;
-} */
+}
+
+label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-right: 10px;
+}
+
+#remove-book, #book-status {
+  background: #3498db;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+ #book-status:hover {
+  background: #2980b9;
+}
+
+#remove-book {
+  background: #e74c3c;
+}
+
+#remove-book:hover {
+  background: #c0392b;
+}
+
+/* styling for the show page */
+
+#show-book-details {
+  background: white;
+  border: 2px solid black;
+  border-radius: 8px;
+  padding: 25px;
+  width: 95%;
+  margin: 30px auto;
+  text-align: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: black;
+  
+}
+#show-book-details img {
+  display: block;
+  margin: 20px auto;
+  width: 150px;
+  height: auto;
+  border-radius: 5px;
+}
 
 
