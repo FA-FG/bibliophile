@@ -2,6 +2,7 @@ const express = require('express')
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const router = express.Router()
+const upload = require('../middleware/upload')
 
 router.get('/profile', async (req, res) => {
   const user = await User.findById(req.session.user._id)
@@ -9,8 +10,9 @@ router.get('/profile', async (req, res) => {
   res.render('books/profile.ejs', { user })
 })
 
-router.get('/:userId/profile', async (req, res) => {
+router.post('/:userId/profile', async (req, res) => {
   try {
+    req.body.image = req.file.filename
     const currentUser = await User.findById(req.params.userId)
     if (!currentUser) {
       return res.status(404).send('User not found')
@@ -23,9 +25,18 @@ router.get('/:userId/profile', async (req, res) => {
   }
 })
 
-router.put('/:userId', async (req, res) => {
+router.put('/:userId', upload, async (req, res) => {
   try {
-    const currentUser = await User.findById(req.params.userId)
+    const userId = req.session.user._id
+    const { username, password } = req.body
+    const image = req.file ? req.file.filename : null
+    const updateData = { username, password }
+    if (image) {
+      updateData.image = image
+    }
+    const currentUser = await User.findByIdAndUpdate(userId, updateData, {
+      new: true
+    })
     if (!currentUser) {
       return res.status(404).send('User not found')
     }
