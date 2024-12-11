@@ -4,18 +4,6 @@
 
 
 
-/* #profile-img {
-  border: 2px solid black;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  margin-left: 660px;
-  background-image: url('/img/cover.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-} */
-
 .sign-btn {
   display: flex;
   flex-direction: column;
@@ -66,13 +54,8 @@
 }
 .box {
   text-align: center;
-
-
-  /* display: flex; */
-  /* justify-content: center;  */
-  /* align-items: center; */
-
 }
+
 .showbody {
   font-family: 'Times New Roman', Times, serif;
   margin: 0;
@@ -123,7 +106,6 @@ body {
   font-family: 'Times New Roman', Times, serif;
   margin: 0;
   padding: 0;
-  /* height: auto; */
   color: #fff;
   position: relative;
   background-color: #f4f4f4;
@@ -155,7 +137,7 @@ h1 {
   font-family: "Lobster", sans-serif;
   text-align: center;
   font-size: 2em;
-  color: #0d2a22; /* White color for the title */
+  color: #0d2a22;
   margin-bottom: 20px;
   font-size: 100px;
 }
@@ -178,13 +160,13 @@ h1 {
 
 
  .add-more-books {
-  text-align: center; /* Center the container */
-  margin-top: 20px; /* Space above the button */
+  text-align: center;
+  margin-top: 20px; 
   align-items: right;
 
-  display: flex;            /* Use flexbox to center the content */
-  justify-content: center;  /* Center horizontally */
-  align-items: center;      /* Center vertically (optional) */
+  display: flex;           
+  justify-content: center; 
+  align-items: center;     
   margin-top: 20px; 
 } 
 
@@ -203,19 +185,6 @@ h1 {
 .add-more-books-link:hover {
   background-color: #e4dcc4;      
 }
-
-
-
-
-
-
-
-/* .add-more-books-link:hover {
-  background-color: #357ABD; 
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); 
-} */
-
 
 
 
@@ -272,21 +241,21 @@ h1 {
 }
 
 #book-details {
-  display: flex; /* Enable Flexbox */
-  justify-content: center; /* Center books horizontally */
-  align-items: center; /* Align items vertically if necessary */
-  flex-wrap: wrap; /* Allow books to wrap on smaller screens */
-  gap: 20px; /* Add space between each book */
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  flex-wrap: wrap; 
+  gap: 20px; 
 }
 
 .book-div {
-  background-color: #fefcf5; /* Slight opacity for book divs */
+  background-color: #fefcf5; 
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 180px;
   padding: 15px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect for scaling */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .book-div:hover {
@@ -352,7 +321,7 @@ h1 {
 
 #navbar {
   display: flex;
-  justify-content: space-evenly; /* Align items on the left and right */
+  justify-content: space-evenly; 
   align-items: center;
   background-color: black;
   color: white;
@@ -365,7 +334,7 @@ h1 {
 
 
 .out {
-  margin-left: auto; /* Push "Sign out" button to the right */
+  margin-left: auto; 
   color: white;
   text-decoration: none;
   font-size: 1em;
@@ -373,10 +342,10 @@ h1 {
 
 a {
   color: white;
-  text-decoration: none; /* To remove underline */
-  display: inline-block; /* Ensure links appear in a row */
-  margin-right: 5px; /* Add space between links */
-  padding: 5px; /* Add padding if desired to make links larger */
+  text-decoration: none; 
+  display: inline-block;
+  margin-right: 5px;
+  padding: 5px; 
 }
 
 #search {
@@ -497,12 +466,7 @@ button[type="submit"]:hover {
 #form1 button:hover {
   background: #2980b9;
 }
-/* Global Styles */
-/* 
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-} */
+
 
 body.bookbody {
   font-family: Arial, sans-serif;
@@ -748,27 +712,7 @@ label {
   margin-bottom: 20px;
 }
 
-/* Profile Picture Section */
-/* Circular Container for Profile Image */
-/* #profile-img {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 20px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 4px solid #3498db;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 
-/* Profile Image Styling */
-/* .profilePicture {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */ 
 
 
 

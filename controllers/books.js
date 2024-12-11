@@ -1,9 +1,10 @@
+// connections
 const router = require('express').Router()
 const axios = require('axios')
-
-const User = require('../models/user.js')
+// conncet to data bases
 const Book = require('../models/book.js')
 const Userbooklist = require('../models/userbooklist.js')
+
 
 // render the index page
 router.get('/', async (req, res) => {
@@ -11,93 +12,90 @@ router.get('/', async (req, res) => {
 })
 
 
+// Delete book from list
 router.delete('/show/:id', async (req, res) => {
-  const userId = req.session.user._id;  
-  const bookId = req.body.bookId;  
-  // console.log(userId);
-  // console.log(`hello ${bookId}`);
+  // user id object
+  const userId = req.session.user._id
+  // user book id obj 
+  const bookId = req.body.bookId  
+
 
   try {
-    // Find the user's book list by the user ID
-    const bookList = await Userbooklist.findOne({ user: userId, bookName: bookId });
+    // Find the book in the user list
+    const bookToDelete = await Userbooklist.findOne({ user: userId, bookName: bookId });
 
-    if (bookList) {
+    if (bookToDelete) {
       await Userbooklist.deleteOne({ user: userId, bookName: bookId })
-    
-      console.log('Book removed from the list');
     }
-
-    res.redirect('/books/book-page');  
+    // return to book page
+    res.render('/books/book-page');  
 
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error removing book from list');
   }
 });
 
-
-
-
-
+// Add a boo to book list
 router.post('/show/:id', async (req, res) => {
-
+  // user id object
   const userId =  req.session.user._id
+  // book id from the api ex. "J2bCDwAAQBAJ "
   const  bookId  = req.body.bookId
 
-  // console.log(`1111111111111111111${userId}`)
-  // console.log(`222222222${bookId}`)
 
-try {
-    // Get the book by id
-      const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
-
-      const bookData = response.data.volumeInfo;
+  try {
+      // Fetch the book by id
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
 
 
+        // The book details are in the volumInfom based on the api book obj
+        const bookData = response.data.volumeInfo;
+        // The book img url from the api obj
+        const i_link = bookData.imageLinks ? bookData.imageLinks.thumbnail : ""
 
-      // let bookToAdd = await Book.findOne({ id: bookId });
-      let bookToAdd = await Book.findOne({ name: bookData.title });
-      const i_link = bookData.imageLinks ? bookData.imageLinks.thumbnail : ""
+      // check if the book already exist in the database
+        let bookToAdd = await Book.findOne({ name: bookData.title });
 
-      if (!bookToAdd) {
-        bookToAdd = new Book({
-            name: bookData.title,
-            author: bookData.authors ? bookData.authors.join(', ') : 'Unknown',
-            genre: bookData.categories ? bookData.categories.join(', ') : 'Unknown',
-            publish_date: bookData.publishedDate || 'Unknown',
-            description: bookData.description || 'No description is available',
-            rating: bookData.averageRating || 'No rating is available',
-            id: response.data.id,
-            img: i_link || 'No image available'
-        });
+        // if the book is not ther we add the book data to the database
+        if (!bookToAdd) {
+          bookToAdd = new Book({
+              name: bookData.title,
+              author: bookData.authors ? bookData.authors.join(', ') : 'Unknown',
+              genre: bookData.categories ? bookData.categories.join(', ') : 'Unknown',
+              publish_date: bookData.publishedDate || 'Unknown',
+              description: bookData.description || 'No description is available',
+              rating: bookData.averageRating || 'No rating is available',
+              id: response.data.id,
+              img: i_link || 'No image available'
+          });
 
-        await bookToAdd.save();
-        console.log("added book")
-      } else {
-        console.log("not added, book already exist")
-      }
+          // add to database
+          await bookToAdd.save();
+          console.log("added book")
+        } else {
+          console.log("not added, book already exist")
+        }
 
-      const hasBookInList = await Userbooklist.findOne({ user: userId, bookName: bookToAdd._id });
-      // console.log(hasBookInList);
-  
-      if (!hasBookInList) {
-        const addToList = new Userbooklist({
-          bookName: bookToAdd._id,  // Reference to the Book model's ObjectId
-          user: userId,
-          readingStatus: 'Want to Read'  // Default status
-        });
-  
-        await addToList.save();
-        console.log("Book added to the user's list.");
-      } else {
-        console.log("Book is already in the user's list.");
-      }
-
-
-
-      res.redirect('/books/book-page') 
-
-  }
+        // Make sure th user does not have the book already
+        const hasBookInList = await Userbooklist.findOne({ user: userId, bookName: bookToAdd._id });
+    
+        // If no it will be added to the user list database
+        if (!hasBookInList) {
+          const addToList = new Userbooklist({
+            bookName: bookToAdd._id, 
+            user: userId,
+            // Default status
+            readingStatus: 'Want to Read'  
+          });
+          
+          // Add it to the database
+          await addToList.save();
+          console.log("Book added to the user's list.");
+        } else {
+          console.log("Book is already in the user's list.");
+        }
+        res.redirect('/books/book-page') 
+    }
 
   catch (error) {
     console.error(error)
@@ -108,14 +106,12 @@ try {
 
 // render the book page
 router.get('/book-page', async (req, res) => {
-  const query = 'bestsellers+inauthor:keyes'; // Example 
-  const startIndex = parseInt(req.query.startIndex) || 0; //example
-  const apiKey = 'YOUR_GOOGLE_API_KEY'; 
+
+  const apiKey = 'AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ'; 
 
 // geth the books data from the api
-  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=bestseller&startIndex=0&maxResults=40&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
+  const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=bestseller&startIndex=0&maxResults=40&key=${apiKey}`)
   
-  // (`https://www.googl-eapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
 
   // save the book data in a var
   const booksData = response.data.items
@@ -146,41 +142,37 @@ router.get('/book-page', async (req, res) => {
 
 
 
-
 // Route to handle individual book details
 router.get('/show/:id', async (req, res) => {
+  // Book id from the api
   const bookId = req.params.id;  
+  // user id obj
   const userId = req.session.user._id;
+  console.log(bookId)
 
   
   try {
     // Fetch book details from the Google Books API
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`);
 
+    // find the book id object by api id
     let bookObj = await Book.findOne({ id: bookId });
 
-  
-    
-
     let isInUserList = false;
-    
-    
-    
   
+    // check if the book is saved in books alread and pass the bookObj._id
     if(bookObj){
       const userBookList = await Userbooklist.findOne({ user: userId, bookName: bookObj._id });
       if (userBookList) {
         isInUserList = true; }
       const bookObjectId = bookObj._id 
-      // res.render('books/show.ejs', { book: response.data, bookObj: bookObjectId});
+      
       res.render('books/show.ejs', { book: response.data, bookObj: bookObjectId, isInUserList: isInUserList});
   
+      // if is not saved it will not pass the bookObj._id because it will be null (prevent crashing)
     }else{
-    
-    
     res.render('books/show.ejs', { book: response.data, isInUserList: isInUserList});
     }
-    // res.render('books/show.ejs', { book: response.data, bookObj: bookObjectId});
 
   } catch (error) {
     console.error(error);
@@ -189,11 +181,12 @@ router.get('/show/:id', async (req, res) => {
 
 
 
-
+// search route
 router.post('/book-page', async (req,res)=>
   {
     const search = req.body.search
 
+    // pass the search input to the api to fetch the book
     const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${search}&startIndex=0&maxResults=40&key=AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ`)
 
     const booksData = response.data.items
@@ -218,7 +211,6 @@ router.post('/book-page', async (req,res)=>
   
     
     res.render('books/book-page.ejs', { books: sortedBooks  })
-
 
   })
 
