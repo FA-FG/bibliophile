@@ -10,8 +10,6 @@ const passUserToView = require('./middleware/pass-user-to-view.js')
 const isSignedIn = require('./middleware/is-signed-in.js')
 app.set('view engine', 'ejs')
 
-// bootstrap
-// import 'bootstrap/dist/css/bootstrap.min.css';
 
 // connect to mongodb "database"
 mongoose.connect(process.env.MONGODB_URI)
@@ -50,6 +48,8 @@ app.use('/books', isSignedIn, bookCtrl)
 app.use('/booklists', isSignedIn, listCtrl)
 app.use('/profile', isSignedIn, profileCtrl)
 
+
+// Render the home page
 app.get('/', async (req, res) => {
   res.render('index.ejs')
 })

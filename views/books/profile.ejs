@@ -1,4 +1,5 @@
-<body>
+<body class="bookbody">
+  <br>
   <%- include('../partials/_navbar.ejs') %>
   <link rel="stylesheet" href="/stylesheets/style.css" />
 
@@ -11,26 +12,43 @@
       enctype="multipart/form-data"
     >
       <label for="profilePicture">Profile Picture:</label>
+      <br>
       <% if (user.image) { %>
       <div id="profile-img">
         <img
-          src="../uploads/<%= user.image %>"
+          src="../uploads/<%= user.image %> "
           alt="<%= user.username %>"
           class="profilePicture"
+         
         />
       </div>
+      <br>
+      <% } else { %>
+        <div id="profile-img">
+          <img
+          src="../img/default.png"
+            alt="<%= user.username %>"
+            class="profilePicture"
+          />
+        </div>
+      <br>
       <% } %>
+      <div id="file-btn">
       <input type="file" name="image" accept="image/*" value="" />
-
+      </div>
 
       <nav>
         <label for="name">UserName:</label>
-        <input type="text" name="username" value="<%= user.name %>"  />
+        <input type="text" name="username" value="<%= user.username %>"  />
       </nav>
       <label for="password">New Password:</label>
-      <input type="password" name="password" />
+      <input type="password" name="password" placeholder="Enter new password" required/>
       <br />
       <button class="box" type="submit">Update Profile</button>
     </form>
+    
   </div>
+  <br>
+  <br>
+  <br>
 </body>
