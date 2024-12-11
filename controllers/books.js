@@ -107,7 +107,8 @@ router.post('/show/:id', async (req, res) => {
 // render the book page
 router.get('/book-page', async (req, res) => {
 
-  const apiKey = 'AIzaSyAn94OOYgaaN-etaLk1QohYDZUkeQCgcLQ'; 
+
+  const apiKey = process.env.apiKey; 
 
 // geth the books data from the api
   const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=bestseller&startIndex=0&maxResults=40&key=${apiKey}`)
