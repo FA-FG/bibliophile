@@ -6,9 +6,13 @@
   <title>Your Book List</title>
   <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
-<body class="booklist-body">
+<body class="bookbody">
+  <br>
   <%- include('../partials/_navbar.ejs') %>
+  <br>
+  <br>
   <h1>Your Book List</h1>
+
 
   <% if (books && books.length > 0) { %>
     <div id="bookd" class="book-list">
@@ -46,11 +50,20 @@
           
         </div>
       <% }); %>
+     
     </div>
+   
   <% } else { %>
-    <p>You haven't added any books to your list yet.</p>
-  <% } %>
+    <p id="no-book-p">You haven't added any books to your list yet.</p>
 
-  <!-- Link to Add More Books -->
+  <% } %>
+  <div class="add-more-books">
   <a href="/books/book-page" class="add-more-books-link">Add More books</a>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <!-- Link to Add More Books -->
+  
   </body>

@@ -1,12 +1,10 @@
-/* // <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 400 to 700 */
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Dancing+Script:wght@400..700&family=Great+Vibes&family=Lobster&display=swap');
 
 @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Dancing+Script:wght@400..700&family=Great+Vibes&family=Lobster&family=Texturina:ital,opsz,wght@0,12..72,100..900;1,12..72,100..900&display=swap');
 
 
 
-#profile-img {
+/* #profile-img {
   border: 2px solid black;
   width: 200px;
   height: 200px;
@@ -16,7 +14,49 @@
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+} */
+
+.sign-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: center;
+  margin: 0 80px 0 0;
+  height: 100%;
+  width: 100%;
+  
 }
+
+.signup-link,
+.signin-link {
+  text-decoration: none;
+  font-size: 1.5em;
+  padding: 8px 0;
+  border-radius: 25px;
+  width: 10em;
+  text-align: center;
+}
+
+.signup-link {
+  background-color: #ce4866;
+  color: white;
+  margin: 0 0 20px 0;
+}
+
+.signup-link:hover {
+  background-color: #e13157;
+}
+
+.signin-link {
+  background-color: #f6e7e7;
+  color: #1c2e5b;
+  margin: 20px 0 0 0;
+}
+
+.signin-link:hover {
+  background-color: #ffffff;
+}
+
 
 .profilePicture {
   border-radius: 50%;
@@ -26,6 +66,34 @@
 }
 .box {
   text-align: center;
+
+
+  /* display: flex; */
+  /* justify-content: center;  */
+  /* align-items: center; */
+
+}
+.showbody {
+  font-family: 'Times New Roman', Times, serif;
+  margin: 0;
+  padding: 0;
+
+  color: #fff;
+  position: relative;
+  background-color: #f4f4f4;
+}
+.showbody::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 200vh;
+  background-image: url('https://i.pinimg.com/736x/bf/4e/aa/bf4eaa44e7647807fa56239b65879bd2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.55;
+  z-index: -1;
 }
 
 .bookbody {
@@ -96,9 +164,68 @@ h1 {
   font-family: "Texturina", serif
 }
 
+#no-book-p{
+  position: absolute;
+   top: 110%;
+    left: 50%;
+     transform: translate(-50%, -50%);
+      text-align: center;
+      color: #4A4E69;
+      font-size: 40px;
+
+
+}
+
+
+ .add-more-books {
+  text-align: center; /* Center the container */
+  margin-top: 20px; /* Space above the button */
+  align-items: right;
+
+  display: flex;            /* Use flexbox to center the content */
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically (optional) */
+  margin-top: 20px; 
+} 
+
+.add-more-books-link {
+  padding: 10px 20px; 
+  background-color: #D3D3D3;
+  text-decoration: none; 
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  width: 200px;
+
+ 
+}
+
+.add-more-books-link:hover {
+  background-color: #e4dcc4;      
+}
+
+
+
+
+
+
+
+/* .add-more-books-link:hover {
+  background-color: #357ABD; 
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); 
+} */
+
+
+
+
+
+
+
 /* About Us Section */
 .about-us {
-  background: rgb(223, 188, 154);
+  background:  #D3D3D3
+;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 40px 20px;
@@ -153,7 +280,7 @@ h1 {
 }
 
 .book-div {
-  background-color: rgba(255, 255, 255, 0.8); /* Slight opacity for book divs */
+  background-color: #fefcf5; /* Slight opacity for book divs */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 180px;
@@ -229,14 +356,13 @@ h1 {
   align-items: center;
   background-color: black;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 25px;
+
+  background-color: #333;
+
 }
 
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  margin: 50px; /* Space between links */
-}
+
 
 .out {
   margin-left: auto; /* Push "Sign out" button to the right */
@@ -491,7 +617,7 @@ form {
   margin-top: 30px;
 }
 .book-divtwo {
-  background: white;
+  background: #fefcf5;
   border: 2px solid #ddd;
   border-radius: 8px;
   width: 250px;
@@ -527,7 +653,7 @@ label {
   margin-right: 10px;
 }
 
-#remove-book, #book-status {
+#remove-book, #book-status, #adding {
   background: #3498db;
   color: white;
   padding: 10px 20px;
@@ -544,28 +670,50 @@ label {
   background: #2980b9;
 }
 
-#remove-book {
+#remove-book, #adding {
   background: #e74c3c;
 }
 
-#remove-book:hover {
+#remove-book:hover, #adding:hover{
   background: #c0392b;
 }
 
 /* styling for the show page */
 
+
+
+
 #show-book-details {
-  background: white;
+  background:  #f6e7e7;
   border: 2px solid black;
   border-radius: 8px;
   padding: 25px;
-  width: 95%;
+  width: 85%;
   margin: 30px auto;
   text-align: left;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: black;
   
 }
+
+#show-book-details {
+  background: #f6e7e7; 
+  border: 1px solid beige; 
+  border-radius: 12px; 
+  padding: 30px;
+  width: 80%; 
+  margin: 40px auto; 
+  text-align: left;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); 
+  color: #333; 
+  
+  line-height: 1.6;
+}
+
+
+
+
+
 #show-book-details img {
   display: block;
   margin: 20px auto;
@@ -576,7 +724,7 @@ label {
 
 /* Profile Box Styling */
 .box {
-  background: #fff;
+  background:  #fefcf5;
   padding: 30px 40px;
   max-width: 600px;
   margin: 50px auto;
@@ -584,6 +732,8 @@ label {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   font-family: Arial, sans-serif;
+  opacity: 95%;
+
 }
 
 .box h1 {

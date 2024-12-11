@@ -6,38 +6,44 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Book-details</title>
 </head>
-<body class="showthebook">
-
+<body class="showbody">
+  <br>
 <%- include('../partials/_navbar.ejs') %> 
-
+<br>
 <div id="show-book-details">
-    <h2><%= book.title %></h2>
+  <br>
+  <br>
+ 
+    <h2><%= book.volumeInfo.title %></h2>
+    <br>
+
+
+    <div img-add-div>
+    <img width="130"src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/img/cover.png' %>" alt="Book cover" />
+    <% if (isInUserList) { %>
+      <form id="show" action="/books/show/<%= book.id %>?_method=DELETE" method="POST">
+        <input type="hidden" name="bookId" value="<%= bookObj %>">
+        <button id="remove-book" type="submit">Remove from my list</button>
+      </form>
+    <% } else { %>
+      <form action="/books/show/<%= book.id %>" method="POST">
+        <input type="hidden" name="bookId" value="<%= book.id %>">
+        <button id="adding" type="submit">Add to my list</button>
+      </form>
+    <% } %>
+  </div>
+
+    <br>
     <p><strong>Author: </strong> <%= book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown' %></p>              
     <p><strong>Genre: </strong> <%= book.volumeInfo.categories %></p>
     <p><strong>Published Date: </strong> <%= book.volumeInfo.publishedDate || 'Unknown Published Date' %></p>
     <p><strong>Description: </strong> <%- book.volumeInfo.description || 'No Description Available' %></p>
     <p><strong>Rating: </strong> <%= book.volumeInfo.averageRating || 'No rating available' %></p>
         
-
-    <img width="130"src="<%= book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/img/cover.png' %>" alt="Book cover" />
     <br>
     <br>
     </div>
-
-    
-
-<% if (isInUserList) { %>
-    <form id="show" action="/books/show/<%= book.id %>?_method=DELETE" method="POST">
-      <input type="hidden" name="bookId" value="<%= bookObj %>">
-      <button id="remove-book" type="submit">Remove from my list</button>
-    </form>
-  <% } else { %>
-    <form action="/books/show/<%= book.id %>" method="POST">
-      <input type="hidden" name="bookId" value="<%= book.id %>">
-      <button id="adding" type="submit">Add to my list</button>
-    </form>
-  <% } %>
-
-  <a href="/books/book-page">Book Page</a>
+<!-- 
+  <a href="/books/book-page">Book Page</a> -->
 </body> 
 </html>
