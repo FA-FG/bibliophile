@@ -28,7 +28,7 @@ router.delete('/show/:id', async (req, res) => {
       await Userbooklist.deleteOne({ user: userId, bookName: bookId })
     }
     // return to book page
-    res.render('/books/book-page');  
+    res.redirect('/books/book-page');  
 
   } catch (error) {
     console.error(error);
