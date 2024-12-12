@@ -12,7 +12,7 @@
 
 ### A website for discovering new Books and reviewing books, This platform allows users to browse books by genre, search for titles or authors,Introduction to books. Whether you're looking for your next read or just exploring new books, this website aims to offer a seamless and enjoyable experience for book lovers.
 
-and reviewing books
+
 
 ## Features
 
